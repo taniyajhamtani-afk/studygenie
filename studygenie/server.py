@@ -22,6 +22,7 @@ GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 # ===== CONFIG =====
 app = Flask(__name__, static_folder='static')
 CORS(app, origins="*")
+init_db()
 
 BASE_DIR    = Path(__file__).parent
 DB_PATH     = BASE_DIR / "database.db"
