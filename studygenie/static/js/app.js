@@ -2,7 +2,7 @@
    StudyGenie — app.js  (Fixed + Enhanced)
 =================================== */
 
-const API = 'http://localhost:5000/api';
+const API = 'https://studygenie-tio9.onrender.com';
 
 // ===== AUTH =====
 const currentUser = JSON.parse(localStorage.getItem('srt_user') || '{}');
