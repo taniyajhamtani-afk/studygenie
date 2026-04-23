@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — StudyGenie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="../css/auth.css"/>
+</head>
+<body>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <a href="../index.html" class="back-link">← Wapas jao</a>
+      <div class="auth-logo">
+        <div class="logo-mark">SG</div>
+        <span>Study<em>Genie</em></span>
+      </div>
+      <h1 class="auth-title">Account Banao! 🚀</h1>
+      <p class="auth-sub">Free mein shuru karo — koi credit card nahi chahiye</p>
+      <div id="alertBox" class="alert hidden"></div>
+
+      <div class="form-group">
+        <label class="form-label">Tumhara Naam</label>
+        <input type="text" id="regName" class="input-field" placeholder="Jaise: Rahul Kumar" autocomplete="name"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" id="regEmail" class="input-field" placeholder="tumhari@email.com" autocomplete="email"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="regPass" class="input-field" placeholder="Min 6 characters" autocomplete="new-password"/>
+          <button class="pass-eye" type="button" onclick="togglePass('regPass', this)" aria-label="Password dikhao">👁️</button>
+        </div>
+      </div>
+
+      <button class="btn-primary w-full" onclick="registerUser()">Account Banao →</button>
+      <p class="auth-footer">Pehle se account hai? <a href="login.html">Login karo</a></p>
+    </div>
+  </div>
+  <script>
+    const API = 'http://localhost:5000/api';
+    function showAlert(msg, type = 'error') {
+      const b = document.getElementById('alertBox');
+      b.className = `alert alert-${type}`;
+      b.textContent = msg;
+      b.classList.remove('hidden');
+    }
+    async function registerUser() {
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPass').value.trim();
+      if (!name || !email || !pass) { showAlert('Sab fields bharo!'); return; }
+      if (pass.length < 6) { showAlert('Password kam se kam 6 characters ka hona chahiye!'); return; }
+      const btn = document.querySelector('.btn-primary.w-full');
+      btn.textContent = 'Bana raha hai...'; btn.disabled = true;
+      try {
+        const res = await fetch(`${API}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password: pass })
+        });
+        const data = await res.json();
+        if (data.error) { showAlert(data.error); btn.textContent = 'Account Banao →'; btn.disabled = false; return; }
+        localStorage.setItem('srt_user', JSON.stringify(data));
+        showAlert('🎉 Account ban gaya! Welcome to StudyGenie!', 'success');
+        setTimeout(() => window.location.href = 'app.html', 1000);
+      } catch(e) {
+        showAlert('Server se connect nahi hua! python server.py chala rahe ho?');
+        btn.textContent = 'Account Banao →'; btn.disabled = false;
+      }
+    }
+    function togglePass(id, btn) {
+      const i = document.getElementById(id);
+      i.type = i.type === 'password' ? 'text' : 'password';
+      btn.textContent = i.type === 'password' ? '👁️' : '🙈';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') registerUser(); });
+  </script>
+</body>
+</html>

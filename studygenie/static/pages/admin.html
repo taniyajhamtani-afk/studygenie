@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel — StudyGenie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="../css/admin.css"/>
+</head>
+<body>
+  <div class="bg-glow glow-1"></div>
+
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      <div class="logo-mark">SG</div>
+      Study<em>Genie</em>
+    </div>
+    <nav class="admin-nav">
+      <button class="nav-item active" onclick="showTab('dashboard',this)">📊 Dashboard</button>
+      <button class="nav-item" onclick="showTab('users',this)">👥 Users</button>
+      <button class="nav-item" onclick="showTab('files',this)">📁 Files</button>
+      <button class="nav-item" onclick="showTab('sessions',this)">💬 Sessions</button>
+    </nav>
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="admin-user"><span>👑</span><span id="adminName">Admin</span></div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <div id="tab-dashboard" class="tab-content">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="totalUsers">—</div><div class="stat-lbl">Total Users</div></div>
+        <div class="stat-card"><div class="stat-icon">📁</div><div class="stat-num" id="totalFiles">—</div><div class="stat-lbl">Files Uploaded</div></div>
+        <div class="stat-card"><div class="stat-icon">💬</div><div class="stat-num" id="totalSessions">—</div><div class="stat-lbl">Sessions</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num" id="totalMessages">—</div><div class="stat-lbl">Messages</div></div>
+      </div>
+      <div class="section-card">
+        <h2>👥 Recent Users</h2>
+        <table class="admin-table" id="recentUsersTable">
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Action</th></tr></thead>
+          <tbody><tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text3)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="tab-users" class="tab-content hidden">
+      <div class="tab-header">
+        <h2>All Users</h2>
+        <button class="btn-primary" onclick="document.getElementById('addUserForm').classList.toggle('hidden')">+ Add User</button>
+      </div>
+      <div id="addUserForm" class="form-card hidden">
+        <h3>Naya User Banao</h3>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Name</label><input id="newName" class="input-field" placeholder="Full name"/></div>
+          <div class="form-group"><label class="form-label">Email</label><input id="newEmail" class="input-field" type="email" placeholder="email@example.com"/></div>
+          <div class="form-group"><label class="form-label">Password</label><input id="newPass" class="input-field" type="password" placeholder="Password"/></div>
+          <div class="form-group"><label class="form-label">Role</label>
+            <select id="newRole" class="input-field">
+              <option value="student">Student</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="addUser()">✓ User Banao</button>
+      </div>
+      <div class="section-card" style="padding:0;overflow:hidden">
+        <table class="admin-table" id="usersTable">
+          <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text3)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FILES -->
+    <div id="tab-files" class="tab-content hidden">
+      <div class="tab-header"><h2>All Files</h2></div>
+      <div class="section-card" style="padding:0;overflow:hidden">
+        <table class="admin-table" id="filesTable">
+          <thead><tr><th>File Name</th><th>Type</th><th>Size</th><th>User</th><th>Date</th><th>Action</th></tr></thead>
+          <tbody><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text3)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SESSIONS -->
+    <div id="tab-sessions" class="tab-content hidden">
+      <div class="tab-header"><h2>Study Sessions</h2></div>
+      <div class="section-card" style="padding:0;overflow:hidden">
+        <table class="admin-table" id="sessionsTable">
+          <thead><tr><th>User</th><th>Topic</th><th>Questions</th><th>Correct</th><th>Date</th></tr></thead>
+          <tbody><tr><td colspan="5" style="text-align:center;padding:24px;color:var(--text3)">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const API = 'http://localhost:5000/api';
+    const user = JSON.parse(localStorage.getItem('srt_user') || '{}');
+    if (!user.id || user.role !== 'admin') window.location.href = 'login.html';
+    document.getElementById('adminName').textContent = user.name || user.email;
+
+    function logout() { localStorage.removeItem('srt_user'); window.location.href = 'login.html'; }
+
+    async function apiFetch(url) {
+      const res = await fetch(API + url);
+      return res.json();
+    }
+    async function apiPost(url, body) {
+      const res = await fetch(API + url, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      return res.json();
+    }
+    async function apiDelete(url) { await fetch(API + url, { method: 'DELETE' }); }
+    async function apiPut(url, body) {
+      const res = await fetch(API + url, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      return res.json();
+    }
+
+    function formatSize(b) {
+      if (!b) return 'N/A';
+      if (b < 1024) return b + ' B';
+      if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+      return (b/1048576).toFixed(1) + ' MB';
+    }
+
+    function showTab(tab, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+      document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.remove('hidden');
+      if (btn) btn.classList.add('active');
+      const titles = { dashboard: 'Dashboard', users: 'Users', files: 'Files', sessions: 'Sessions' };
+      document.getElementById('pageTitle').textContent = titles[tab];
+      if (tab === 'dashboard') loadDashboard();
+      else if (tab === 'users') loadUsers();
+      else if (tab === 'files') loadFiles();
+      else if (tab === 'sessions') loadSessions();
+    }
+
+    async function loadDashboard() {
+      try {
+        const stats = await apiFetch('/admin/stats');
+        document.getElementById('totalUsers').textContent = stats.users ?? '—';
+        document.getElementById('totalFiles').textContent = stats.files ?? '—';
+        document.getElementById('totalSessions').textContent = stats.sessions ?? '—';
+        document.getElementById('totalMessages').textContent = stats.messages ?? '—';
+
+        const users = await apiFetch('/admin/users');
+        const recent = users.slice(0, 5);
+        const tbody = document.querySelector('#recentUsersTable tbody');
+        tbody.innerHTML = recent.length ? recent.map(u => `
+          <tr>
+            <td><strong>${u.name}</strong></td>
+            <td style="color:var(--text3)">${u.email}</td>
+            <td><span class="role-badge ${u.role}">${u.role}</span></td>
+            <td style="color:var(--text3)">${(u.created_at||'').slice(0,10) || 'N/A'}</td>
+            <td><button class="action-btn danger" onclick="deleteUser(${u.id})">🗑️</button></td>
+          </tr>`).join('')
+          : '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">No users yet</td></tr>';
+      } catch(e) {
+        document.querySelector('#recentUsersTable tbody').innerHTML =
+          '<tr><td colspan="5" style="color:var(--rose);padding:16px">⚠️ Backend se connect nahi hua! python server.py chala rahe ho?</td></tr>';
+      }
+    }
+
+    async function loadUsers() {
+      try {
+        const users = await apiFetch('/admin/users');
+        const tbody = document.querySelector('#usersTable tbody');
+        tbody.innerHTML = users.length ? users.map(u => `
+          <tr>
+            <td style="color:var(--text3);font-size:0.75rem">#${u.id}</td>
+            <td><strong>${u.name}</strong></td>
+            <td style="color:var(--text3)">${u.email}</td>
+            <td><span class="role-badge ${u.role}">${u.role}</span></td>
+            <td style="color:var(--text3)">${(u.created_at||'').slice(0,10) || 'N/A'}</td>
+            <td>
+              <button class="action-btn" onclick="toggleRole(${u.id})">🔄 Role</button>
+              <button class="action-btn danger" onclick="deleteUser(${u.id})">🗑️ Delete</button>
+            </td>
+          </tr>`).join('')
+          : '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">No users</td></tr>';
+      } catch(e) {
+        document.querySelector('#usersTable tbody').innerHTML =
+          '<tr><td colspan="6" style="color:var(--rose);padding:16px">⚠️ Server error</td></tr>';
+      }
+    }
+
+    async function loadFiles() {
+      try {
+        const files = await apiFetch('/admin/files');
+        const tbody = document.querySelector('#filesTable tbody');
+        tbody.innerHTML = files.length ? files.map(f => `
+          <tr>
+            <td><strong>${f.original_name}</strong></td>
+            <td><span class="type-badge">${f.file_category || f.file_type || 'file'}</span></td>
+            <td style="color:var(--text3)">${formatSize(f.file_size)}</td>
+            <td style="color:var(--text3)">${f.user_name || 'Unknown'}</td>
+            <td style="color:var(--text3)">${(f.uploaded_at||'').slice(0,10) || 'N/A'}</td>
+            <td><button class="action-btn danger" onclick="deleteFile(${f.id})">🗑️ Delete</button></td>
+          </tr>`).join('')
+          : '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px">No files uploaded</td></tr>';
+      } catch(e) {
+        document.querySelector('#filesTable tbody').innerHTML =
+          '<tr><td colspan="6" style="color:var(--rose);padding:16px">⚠️ Server error</td></tr>';
+      }
+    }
+
+    async function loadSessions() {
+      try {
+        const sessions = await apiFetch('/admin/sessions');
+        const tbody = document.querySelector('#sessionsTable tbody');
+        tbody.innerHTML = sessions.length ? sessions.map(s => {
+          const acc = s.questions_asked > 0
+            ? Math.round(s.correct_answers / s.questions_asked * 100) + '%' : '—';
+          return `<tr>
+            <td><strong>${s.user_name || 'Unknown'}</strong></td>
+            <td>${s.topic || 'General'}</td>
+            <td style="text-align:center">${s.questions_asked || 0}</td>
+            <td style="text-align:center;color:var(--green)">${s.correct_answers || 0} <small style="color:var(--text3)">(${acc})</small></td>
+            <td style="color:var(--text3)">${(s.started_at||'').slice(0,10) || 'N/A'}</td>
+          </tr>`;
+        }).join('')
+          : '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">No sessions yet</td></tr>';
+      } catch(e) {
+        document.querySelector('#sessionsTable tbody').innerHTML =
+          '<tr><td colspan="5" style="color:var(--rose);padding:16px">⚠️ Server error</td></tr>';
+      }
+    }
+
+    async function deleteUser(id) {
+      if (!confirm('Is user ko delete karna chahte ho?')) return;
+      await apiDelete(`/admin/users/${id}`);
+      loadDashboard(); loadUsers();
+    }
+    async function deleteFile(id) {
+      if (!confirm('Is file ko delete karna chahte ho?')) return;
+      await apiDelete(`/files/${id}`);
+      loadFiles();
+    }
+    async function toggleRole(id) {
+      await apiPut(`/admin/users/${id}/role`, {});
+      loadUsers();
+    }
+    async function addUser() {
+      const name = document.getElementById('newName').value.trim();
+      const email = document.getElementById('newEmail').value.trim();
+      const pass = document.getElementById('newPass').value.trim();
+      const role = document.getElementById('newRole').value;
+      if (!name || !email || !pass) { alert('Sab fields bharo!'); return; }
+      const data = await apiPost('/register', { name, email, password: pass, role });
+      if (data.error) { alert(data.error); return; }
+      document.getElementById('addUserForm').classList.add('hidden');
+      document.getElementById('newName').value = '';
+      document.getElementById('newEmail').value = '';
+      document.getElementById('newPass').value = '';
+      loadUsers(); loadDashboard();
+    }
+
+    // Initialize
+    loadDashboard();
+  </script>
+</body>
+</html>
