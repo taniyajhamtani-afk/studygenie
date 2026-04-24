@@ -105,7 +105,7 @@ def init_db():
             VALUES ('Admin', 'admin@srt.com', ?, 'admin')
         """, (base64.b64encode(b'admin123').decode(),))
         conn.commit()
-        with app.app_context():
+with app.app_context():
     init_db()
 
 def query(sql, params=()):
