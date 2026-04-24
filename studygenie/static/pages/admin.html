@@ -101,7 +101,7 @@
   </main>
 
   <script>
-    const API = 'http://localhost:5000/api';
+    const API = "https://studygenie-tio9.onrender.com/api";
     const user = JSON.parse(localStorage.getItem('srt_user') || '{}');
     if (!user.id || user.role !== 'admin') window.location.href = 'login.html';
     document.getElementById('adminName').textContent = user.name || user.email;
