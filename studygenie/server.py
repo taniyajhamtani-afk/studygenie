@@ -17,6 +17,7 @@ from werkzeug.utils import secure_filename
 import urllib.request
 import urllib.error
 import os
+import time
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 # ===== CONFIG =====
@@ -222,15 +223,18 @@ def call_gemini(messages, system_prompt, files=None):
         method='POST'
     )
 
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            data = json.loads(resp.read().decode('utf-8'))
-            return data['candidates'][0]['content']['parts'][0]['text']
-    except urllib.error.HTTPError as e:
-        err = json.loads(e.read().decode())
-        return f"API Error: {err.get('error', {}).get('message', 'Unknown error')}"
-    except Exception as e:
-        return f"Error: {str(e)}"
+    # 🔥 retry logic
+    for i in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+                return data['candidates'][0]['content']['parts'][0]['text']
+
+        except Exception as e:
+            print(f"Retry {i+1} failed:", e)
+            time.sleep(2)
+
+    return "⚠️ AI busy hai, 10 sec baad try karo"
 
 # ===== AUTH ROUTES =====
 @app.route('/api/register', methods=['POST'])
