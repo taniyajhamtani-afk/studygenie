@@ -228,7 +228,11 @@ def call_gemini(messages, system_prompt, files=None):
         try:
             with urllib.request.urlopen(req, timeout=60) as resp:
                 data = json.loads(resp.read().decode('utf-8'))
-                return data['candidates'][0]['content']['parts'][0]['text']
+
+                try:
+                    return data['candidates'][0]['content']['parts'][0]['text']
+                except:
+                    return "⚠️ AI response nahi mila, dubara try karo"
 
         except Exception as e:
             print(f"Retry {i+1} failed:", e)
