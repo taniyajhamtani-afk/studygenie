@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyGenie — Your AI Teacher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/theme.css"/>
+  <link rel="stylesheet" href="css/home.css"/>
+  <style>.logo {
+  border-radius: 10px;
+  overflow: hidden;
+}</style>
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <div class="bg-glow glow-3"></div>
+
+  <!-- NAV -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <div class="logo"><img src="./logo.png" alt="StudyGenie Logo" width="40px" height="40px"></div>
+      <span>Study<em>Genie</em></span>
+    </div>
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#features">Features</a>
+      <a href="#how">Kaise kaam karta hai</a>
+      <a href="pages/login.html" class="nav-btn-ghost">Login</a>
+      <a href="pages/register.html" class="nav-btn-solid">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1 class="hero-title">
+      Padhai ko banaao<br/>
+      <span class="gradient-text">Smart &amp; Fun</span>
+    </h1>
+    <p class="hero-sub">
+      Apna AI teacher — jo samjhata hai, sawaal karta hai,<br/>
+      aur tumhari tayyari strong karta hai. 💪
+    </p>
+    <div class="hero-btns">
+      <a href="pages/register.html" class="btn-primary">🚀 Free Mein Shuru Karo</a>
+      <a href="pages/login.html" class="btn-ghost">Login karo →</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-pill">📚 Any Topic</div>
+      <div class="stat-pill">🎤 Voice Support</div>
+      <div class="stat-pill">❓ MCQ Practice</div>
+      <div class="stat-pill">📝 Notes Analysis</div>
+      <div class="stat-pill">📁 File Upload</div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll karo</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Kya kya kar sakte ho?</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <div class="feature-icon">🤖</div>
+        </div>
+        <h3>AI Teacher</h3>
+        <p>Koi bhi topic — step-by-step explanation, real Indian examples ke saath. Bilkul personal tutor!</p>
+        <div class="feature-tag">Interactive</div>
+      </div>
+      <div class="feature-card featured">
+        <div class="featured-glow"></div>
+        <div class="feature-icon-wrap">
+          <div class="feature-icon">🎤</div>
+        </div>
+        <h3>Voice Mode</h3>
+        <p>Teacher bolega, tum bhi bol ke poochh sakte ho — bilkul natural conversation style mein</p>
+        <div class="feature-tag">Popular</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <div class="feature-icon">📝</div>
+        </div>
+        <h3>Notes Analysis</h3>
+        <p>Apne notes paste karo — summary, key points aur practice questions automatically milenge!</p>
+        <div class="feature-tag">Smart</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <div class="feature-icon">📁</div>
+        </div>
+        <h3>File Upload</h3>
+        <p>PDF, images, videos, text files — sab upload karo aur teacher se seedha discuss karo</p>
+        <div class="feature-tag">Multi-format</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <div class="feature-icon">⚡</div>
+        </div>
+        <h3>Exam Mode</h3>
+        <p>Last minute revision ke liye rapid-fire questions aur short summaries. Exam mein top karo!</p>
+        <div class="feature-tag">Exam Ready</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon-wrap">
+          <div class="feature-icon">📊</div>
+        </div>
+        <h3>Progress Track</h3>
+        <p>Accuracy, weak areas, topics covered — sab track hota hai automatically. Improvement dekho!</p>
+        <div class="feature-tag">Analytics</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="how">
+    <div class="section-label">Process</div>
+    <h2 class="section-title">Kaise kaam karta hai?</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h3>Account banao</h3>
+          <p>Email se sign up karo — bilkul free hai!</p>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h3>Topic choose karo</h3>
+          <p>Koi bhi subject — Science, Math, History, Coding</p>
+        </div>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h3>Seekho &amp; Practice karo</h3>
+          <p>AI teacher padhata hai, sawaal karta hai, guide karta hai</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <div class="cta-glow"></div>
+      <div class="cta-badge">🎯 Free Forever</div>
+      <h2>Ready ho? Aaj se shuru karo!</h2>
+      <p>Bilkul free — koi credit card nahi chahiye. Abhi start karo!</p>
+      <a href="pages/register.html" class="btn-primary btn-large">🚀 Abhi Start Karo</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <div class="logo-mark sm"><img src="./logo.png" alt="StudyGenie Logo" width="40px" height="40px"></div>
+        <span> StudyGenie</span>
+      </div>
+      <p>Made with ❤️ for Indian Students</p>
+      <div class="footer-links">
+        <a href="pages/login.html">Login</a>
+        <a href="pages/register.html">Register</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+    });
+    // Mobile menu
+    function toggleMobileMenu() {
+      const links = document.getElementById('navLinks');
+      const btn = document.getElementById('hamburger');
+      links.classList.toggle('open');
+      btn.classList.toggle('active');
+    }
+    // Fade in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.feature-card, .step').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

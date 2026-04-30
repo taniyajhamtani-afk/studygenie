@@ -1,0 +1,128 @@
+/* ===== STUDYGENIE — DARK EMERALD THEME ===== */
+
+:root {
+  --bg: #080c10;
+  --bg2: #0c1117;
+  --bg3: #111820;
+  --surface: #141c26;
+  --surface2: #1a2535;
+  --surface3: #1f2d40;
+
+  --border: rgba(52, 211, 153, 0.12);
+  --border2: rgba(52, 211, 153, 0.28);
+  --border3: rgba(52, 211, 153, 0.45);
+
+  --green: #34d399;
+  --green-dark: #059669;
+  --green-glow: rgba(52, 211, 153, 0.15);
+  --teal: #2dd4bf;
+  --blue: #38bdf8;
+  --amber: #fbbf24;
+  --rose: #fb7185;
+  --violet: #a78bfa;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+
+  --text: #e2ede9;
+  --text2: #7da897;
+  --text3: #3d5c50;
+
+  --gradient: linear-gradient(135deg, #34d399, #2dd4bf);
+  --gradient2: linear-gradient(135deg, #059669, #34d399);
+  --gradient3: linear-gradient(135deg, #34d399, #38bdf8);
+  --glow: 0 0 40px rgba(52, 211, 153, 0.2);
+  --shadow: 0 8px 32px rgba(0,0,0,0.6);
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+
+  --font: 'Outfit', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--green-dark); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--green); }
+
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px;
+  background: var(--gradient);
+  color: #030c08;
+  border: none; border-radius: 99px;
+  font-family: var(--font); font-size: 0.93rem; font-weight: 700;
+  cursor: pointer; text-decoration: none;
+  transition: all 0.25s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 4px 20px rgba(52,211,153,0.3);
+  letter-spacing: 0.2px;
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(52,211,153,0.45); filter: brightness(1.06); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px;
+  background: transparent; color: var(--green);
+  border: 1.5px solid var(--border2); border-radius: 99px;
+  font-family: var(--font); font-size: 0.93rem; font-weight: 600;
+  cursor: pointer; text-decoration: none; transition: all 0.25s;
+}
+.btn-ghost:hover { background: rgba(52,211,153,0.08); border-color: var(--green); }
+
+.btn-large { padding: 16px 36px; font-size: 1.05rem; }
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 24px; backdrop-filter: blur(10px);
+}
+
+.input-field {
+  width: 100%; padding: 12px 16px;
+  background: var(--bg3); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text);
+  font-family: var(--font-body); font-size: 0.93rem; outline: none; transition: all 0.2s;
+}
+.input-field:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(52,211,153,0.1); background: var(--surface); }
+.input-field::placeholder { color: var(--text3); }
+
+select.input-field { cursor: pointer; }
+select.input-field option { background: var(--bg3); }
+
+.form-label {
+  display: block; font-size: 0.78rem; font-weight: 700;
+  color: var(--text2); margin-bottom: 6px;
+  letter-spacing: 0.8px; text-transform: uppercase;
+}
+
+.form-group { margin-bottom: 18px; }
+
+.alert {
+  padding: 12px 16px; border-radius: var(--radius-sm);
+  font-size: 0.88rem; margin-bottom: 16px;
+}
+.alert-error { background: rgba(251,113,133,0.1); border: 1px solid rgba(251,113,133,0.3); color: #fda4af; }
+.alert-success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green); }
+
+.hidden { display: none !important; }
